@@ -1,0 +1,19 @@
+{
+  "authors" : [
+    "risou"
+  ],
+  "build-depends" : [ ],
+  "depends" : [ ],
+  "description" : "blah blah blah",
+  "license" : "Artistic-2.0",
+  "name" : "Lithograph",
+  "perl" : "6.c",
+  "provides" : {
+    "Lithograph" : "lib/Lithograph.pm6"
+  },
+  "resources" : [ ],
+  "source-url" : "",
+  "tags" : [ ],
+  "test-depends" : [ ],
+  "version" : "0.0.1"
+}
