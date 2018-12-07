@@ -1,7 +1,18 @@
 #!/usr/bin/env perl6
 
-use Lithograph;
+use Lithograph::CLI;
 
-sub MAIN() {
-    Lithograph.markup();
+sub MAIN(Str $command) {
+    Lithograph::CLI.run($command);
+}
+
+sub USAGE() {
+    print Q:c:to/EOH/; 
+Usage:
+  {$*PROGRAM-NAME} [command]
+
+Lithograph can accept following commands.
+
+  create        Generate new Lithograph in current directory
+EOH
 }
