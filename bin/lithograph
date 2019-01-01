@@ -2,17 +2,18 @@
 
 use Lithograph::CLI;
 
-sub MAIN(Str $command) {
-    Lithograph::CLI.run($command);
+sub MAIN(Str $command, *@params) {
+    Lithograph::CLI.run($command, @params);
 }
 
 sub USAGE() {
     print Q:c:to/EOH/; 
 Usage:
-  {$*PROGRAM-NAME} [command]
+  {$*PROGRAM-NAME} command [parameters]
 
 Lithograph can accept following commands.
 
   create        Generate new Lithograph in current directory
+  write [title] Make new markdown file and open editor for writing your log
 EOH
 }
