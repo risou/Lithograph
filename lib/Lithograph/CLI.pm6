@@ -1,6 +1,7 @@
 use v6.c;
 use Lithograph::Setup;
 use Lithograph::Write;
+use Lithograph::Build;
 
 unit class Lithograph::CLI;
 
@@ -15,6 +16,7 @@ method run(Str $command, @params) {
             Lithograph::Write.run(@params);
         }
         when "build" {
+            say "`build` command must has no parameter" and succeed if @params.elems != 0;
             Lithograph::Build.run();
         }
         default {
