@@ -3,6 +3,10 @@ unit class Lithograph::Setup;
 
 method run() {
     say "call Setup";
+    my @templates = [
+        "index.tt",
+        "article.tt"
+    ];
 
     # setup directories
     IO::Path.new("static").mkdir(0o755);
@@ -11,4 +15,7 @@ method run() {
     IO::Path.new("html").mkdir(0o755);
 
     # deploy files
+    for @templates -> $template {
+        spurt "templates".IO.child($template), slurp(%?RESOURCES{"templates/" ~ $template}.IO); #
+    }
 }
