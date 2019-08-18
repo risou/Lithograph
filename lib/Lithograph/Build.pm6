@@ -11,7 +11,7 @@ method run() {
     for dir("articles") -> $file {
         next if "md" ne $file.extension;
         say $file.basename;
-        my $html = "html/" ~ $file.basename;
+        my $html = "docs/" ~ $file.basename;
         my ($params, $markdown) = self.parse($file);
         my $text = self.htmlize($params, $markdown);
         spurt ($html.IO.extension: 'html'), $text;
