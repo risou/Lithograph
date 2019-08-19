@@ -16,6 +16,7 @@ method run() {
 
     # deploy files
     for @templates -> $template {
-        spurt "templates".IO.child($template), slurp(%?RESOURCES{"templates/" ~ $template}.IO); #
+        spurt "templates".IO.child($template), slurp(%?RESOURCES{"templates/" ~ $template}.IO);
     }
+    spurt ".".IO.child(".travis.yml"), slurp(%?RESOURCES{".travis.yml"}.IO);
 }

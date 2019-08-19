@@ -1,0 +1,22 @@
+os:
+  - linux
+language: perl6
+perl6:
+  - latest
+install:
+  - sudo apt-get install libmarkdown2-dev
+  - rakudobrew build zef
+  - zef install Text::Markdown::Discount
+  - zef install Template6
+  - git clone --depth=1 --branch=master https://${GH_TOKEN}@github.com/risou/Lithograph.git lithograph
+script:
+  - export PERL6LIB=$PWD/lithograph/lib/
+  - perl6 lithograph/bin/lithograph create
+  - perl6 lithograph/bin/lithograph build
+after_success:
+  - git checkout master
+  - git add docs/*
+  - git commit -m "by Travis CI (JOB $TRAVIS_JOB_NUMBER)"
+  - git push https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git master # >/dev/null 2>&1
+notifications:
+  email: false
