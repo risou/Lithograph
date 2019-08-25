@@ -14,10 +14,15 @@
   "perl" : "6.c",
   "provides" : {
     "Lithograph" : "lib/Lithograph.pm6",
-    "Lithograph::CLI" : "lib/Lithograph/CLI.pm6"
+    "Lithograph::Build" : "lib/Lithograph/Build.pm6",
+    "Lithograph::CLI" : "lib/Lithograph/CLI.pm6",
+    "Lithograph::Setup" : "lib/Lithograph/Setup.pm6",
+    "Lithograph::Write" : "lib/Lithograph/Write.pm6"
   },
   "resources" : [
-    "templates/index.tt"
+    "templates/index.tt",
+    "templates/list.tt",
+    "templates/article.tt"
   ],
   "source-url" : "",
   "tags" : [ ],
