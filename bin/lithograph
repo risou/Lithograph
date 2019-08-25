@@ -15,5 +15,6 @@ Lithograph can accept following commands.
 
   create        Generate new Lithograph in current directory
   write [title] Make new markdown file and open editor for writing your log
+  build         Parse markdown files and generate html
 EOH
 }

@@ -9,6 +9,10 @@ use Text::Markdown::Discount;
 
 Lithograph - Minimal static site generator.
 
+=head1 INSTALL
+
+  % zef install git://github.com/risou/Lithograph.git
+
 =head1 SYNOPSIS
 
   % lithograph setup

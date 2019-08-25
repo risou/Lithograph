@@ -3,6 +3,11 @@ NAME
 
 Lithograph - Minimal static site generator.
 
+INSTALL
+=======
+
+    % zef install git://github.com/risou/Lithograph.git
+
 SYNOPSIS
 ========
 
