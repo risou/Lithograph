@@ -20,9 +20,11 @@
     "Lithograph::Write" : "lib/Lithograph/Write.pm6"
   },
   "resources" : [
+    ".travis.yml",
     "templates/index.tt",
     "templates/list.tt",
-    "templates/article.tt"
+    "templates/article.tt",
+    "static/main.css"
   ],
   "source-url" : "",
   "tags" : [ ],
