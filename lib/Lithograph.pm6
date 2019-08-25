@@ -7,15 +7,19 @@ use Text::Markdown::Discount;
 
 =head1 NAME
 
-Lithograph - blah blah blah
+Lithograph - Minimal static site generator.
 
 =head1 SYNOPSIS
 
-  use Lithograph;
+  % lithograph setup
+  % lithograph write
+  % lithograph build
 
 =head1 DESCRIPTION
 
-Lithograph is ...
+Lithograph is a static site generator.
+Lithograph supports markdown.
+Lithograph supports GitHub Pages.
 
 =head1 AUTHOR
 
@@ -23,7 +27,7 @@ risou <risou.f@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2018 risou
+Copyright 2018-2019 risou
 
 This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.
 
