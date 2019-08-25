@@ -8,6 +8,7 @@ install:
   - rakudobrew build zef
   - zef install Text::Markdown::Discount
   - zef install Template6
+  - zef install YAMLish
   - git clone --depth=1 --branch=master https://${GH_TOKEN}@github.com/risou/Lithograph.git lithograph
 script:
   - export PERL6LIB=$PWD/lithograph/lib/
