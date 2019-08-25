@@ -5,6 +5,7 @@ method run() {
     say "call Setup";
     my @templates = [
         "index.tt",
+        "list.tt",
         "article.tt"
     ];
 
@@ -13,6 +14,7 @@ method run() {
     IO::Path.new("articles").mkdir(0o755);
     IO::Path.new("templates").mkdir(0o755);
     IO::Path.new("docs").mkdir(0o755);
+    IO::Path.new("docs/entry").mkdir(0o755);
 
     # deploy files
     for @templates -> $template {

@@ -18,21 +18,22 @@
             <nav class="level">
                 <div class="level-left"></div>
                 <div class="level-right">
-                    <p class="level-item">top</p>
-                    <p class="level-item"><a href="/list.html">list</a></p>
+                    <p class="level-item"><a href="/">top</a></p>
+                    <p class="level-item">list</p>
                 </div>
             </nav>
             <section class="articles">
-                [% for articles -> article %]
-                <div class="article">
-                    <h1 class="title is-2"><a href="/entry/[% article.params.name %].html">[% article.params.title %]</a></h1>
-                    <div class="subtitle published">[% article.params.date %]</div>
-                    <div class="content">
-                        [% article.params.text %]
-                    </div>
+                <div class="content">
+                    <table class="table is-hoverable">
+                        [% for articles -> article %]
+                        <tr>
+                            <th style="width: 150px;">[% article.params.date %]</th>
+                            <th><a href="/entry/[% article.params.name %].html">[% article.params.title %]</a></th>
+                        </tr>
+                        [% end %]
+                    </table>
                 </div>
-                [% end %]
-            </section>
+
         </div>
         <footer class="footer">
             <div class="content has-text-centered">

@@ -4,26 +4,37 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
+        <link rel="stylesheet" href="./static/main.css">
     </head>
     <body>
-        <section class="hero is-medium is-bold is-light">
+        <section class="hero is-medium is-bold is-dark">
             <div class="hero-body">
                 <div class="container has-text-centered">
-                    <h1 class="title">[% params.title %]</h1>
+                    <h1 class="title is-1">[% settings.blog.title %]</h1>
                 </div>
             </div>
         </section>
-        <div class="container">
+        <div class="container column is-10 is-offset-1">
+            <nav class="level">
+                <div class="level-left"></div>
+                <div class="level-right">
+                    <p class="level-item"><a href="/">top</a></p>
+                    <p class="level-item"><a href="/list.html">list</a></p>
+                </div>
+            </nav>
             <section class="articles">
-                <div class="column is-8 is-offset-2">
-                    <div class="article">
+                <div class="article">
+                    <h1 class="title is-2">[% params.title %]</h1>
+                    <div class="subtitle published">[% params.date %]</div>
+                    <div class="content">
                         [% params.text %]
                     </div>
+                </div>
             </section>
         </div>
         <footer class="footer">
             <div class="content has-text-centered">
-                [% params.footer %]
+                [% settings.blog.footer %]
             </div>
         </footer>
     </body>

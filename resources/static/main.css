@@ -1,0 +1,57 @@
+body {
+    font-family: helvetica,Segoe UI,"Hiragino Maru Gothic ProN","ヒラギノ丸ゴ ProN",メイリオ,Meiryo,sans-serif;
+}
+
+.container > .articles > .article > .title {
+    border-bottom: 1.5px solid #666666;
+}
+
+.container > .articles > .article > .published {
+    text-align: right;
+}
+
+.article:not(:last-child) {
+    margin-bottom: 200px;
+}
+
+/* .content p { */
+/*     text-indent: 1em; */
+/* } */
+
+.content h2 {
+    margin-top: 3rem;
+    margin-bottom: 2rem;
+    text-indent: 0.5em;
+    font-size: 2rem;
+    border-left: 8px solid #1f6ed4;
+    border-bottom: 1px solid #1f6ed4;
+}
+
+.content h3 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    border-bottom: 1px solid #1f6ed4;
+}
+
+.content h4 {
+p    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+}
+
+.content h5 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+}
+
+.content h6 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-size: 0.75rem;
+}
+
+.content code {
+    font-family: Menlo,Monaco,Cica,Ricty,Consolas,"Courier New",monospace;
+}
