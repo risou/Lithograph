@@ -9,11 +9,10 @@ install:
   - zef install Text::Markdown::Discount
   - zef install Template6
   - zef install YAMLish
-  - git clone --depth=1 --branch=master https://${GH_TOKEN}@github.com/risou/Lithograph.git lithograph
+  - zef install git://github.com/risou/Lithograph.git
 script:
-  - export PERL6LIB=$PWD/lithograph/lib/
-  - perl6 lithograph/bin/lithograph create
-  - perl6 lithograph/bin/lithograph build
+  - perl6 lithograph create
+  - perl6 lithograph build
 after_success:
   - git checkout master
   - git add docs/*
