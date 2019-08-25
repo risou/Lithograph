@@ -3,12 +3,6 @@ unit class Lithograph:ver<0.0.1>:auth<github:risou>;
 
 use Text::Markdown::Discount;
 
-method markup() {
-    say markdown('README.md'.IO)
-}
-
-
-
 =begin pod
 
 =head1 NAME
