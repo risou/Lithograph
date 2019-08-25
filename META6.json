@@ -5,7 +5,8 @@
   "build-depends" : [ ],
   "depends" : [
     "Text::Markdown::Discount",
-    "Template6"
+    "Template6",
+    "YAMLish"
   ],
   "description" : "blah blah blah",
   "license" : "Artistic-2.0",
