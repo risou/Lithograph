@@ -20,26 +20,31 @@ method run() {
         @articles.push( {params => $params, markdown => $markdown} );
         my $text = self.htmlize-article($settings, $params, $markdown);
         spurt ($html.IO.extension: 'html'), $text;
+        say "make " ~ $html.IO.extension: 'html';
         if $params<alias>:exists {
-            my $alias = "docs/entry/" ~ $file.basename;
-            spurt ($alias.IO.extension: 'html'), self.htmlize-alias($settings, $params, $markdown, $file)
+            my $alias = "docs/entry/" ~ $params<alias> ~ ".html";
+            spurt ($alias.IO.extension: 'html'), self.htmlize-alias($settings, $params, $markdown, $file);
+            say "make alias " ~ $alias.IO.extension: 'html';
         }
     }
     $recent = @articles.elems if @articles.elems < $recent;
 
     my $index = "docs/index.html";
     spurt $index, self.htmlize-index($settings, @articles[0..($recent-1)]);
+    say "make index.html";
 
     my $list = "docs/list.html";
     spurt $list, self.htmlize-list($settings, @articles);
+    say "make list.html";
 
     self.copy-static-files();
+    say "copy static files";
 }
 
 method htmlize-article($settings, $params, $markdown) {
-    my $contents = markdown($markdown, :AUTOLINK, :FENCEDCODE);
+    my $contents = Text::Markdown::Discount.from-str($markdown, :AUTOLINK, :FENCEDCODE);
     $params<text> = $contents;
-    return $t6.process('article', :params(%$params), :settings(%$settings));
+    return $t6.process('article', :params(%$params), :settings(%$settings), :canonical(False));
 }
 
 method htmlize-index($settings, @articles) {
@@ -54,10 +59,10 @@ method htmlize-list($settings, @articles) {
 }
 
 method htmlize-alias($settings, $params, $markdown, $filename) {
-    my $contents = markdown($markdown, :AUTOLINK, :FENCEDCODE);
+    my $contents = Text::Markdown::Discount.from-str($markdown, :AUTOLINK, :FENCEDCODE);
     $params<text> = $contents;
     $params<origin> = '/entry/' ~ $filename.basename;
-    return $t6.process('article', :params(%$params), :settings(%$settings));
+    return $t6.process('article', :params(%$params), :settings(%$settings), :canonical(True));
 }
 
 method parse($file) {
