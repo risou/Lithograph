@@ -21,7 +21,7 @@ method run() {
         my $text = self.htmlize-article($settings, $params, $markdown);
         spurt ($html.IO.extension: 'html'), $text;
         if $params<alias>:exists {
-            $alias = "docs/entry/" ~ $file.basename;
+            my $alias = "docs/entry/" ~ $file.basename;
             spurt ($alias.IO.extension: 'html'), self.htmlize-alias($settings, $params, $markdown, $file)
         }
     }
@@ -51,7 +51,7 @@ method htmlize-list($settings, @articles) {
     return $t6.process('list', :articles(@articles), :settings(%$settings));
 }
 
-method htmlize-alias(4settings, $params, $markdown, $filename) {
+method htmlize-alias($settings, $params, $markdown, $filename) {
     my $contents = markdown($markdown, :AUTOLINK, :FENCEDCODE);
     $params<text> = $contents;
     $params<origin> = '/entry/' ~ $filename.basename;

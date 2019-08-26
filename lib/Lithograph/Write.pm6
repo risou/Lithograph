@@ -7,7 +7,7 @@ method run(@params) {
     my $today = Date.today;
     my $now = DateTime.now;
     my $filename = $today ~ '-' ~ $name ~ '.md';
-    spurt "articles/" ~ $filename, self.template({ title: $name, date: $date, datetime: $datetime });
+    spurt "articles/" ~ $filename, self.template({ title => $name, date => $today, datetime => $now });
     
     my $editor = %*ENV<EDITOR>;
     run $editor, "articles/" ~ $filename if $editor;
