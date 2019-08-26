@@ -20,6 +20,7 @@
     "Lithograph::Write" : "lib/Lithograph/Write.pm6"
   },
   "resources" : [
+    "config.yml",
     ".travis.yml",
     "templates/index.tt",
     "templates/list.tt",

@@ -12,7 +12,7 @@ my $config_file = 'config.yml'.IO;
 method run() {
     my @articles;
     my $recent = 5;
-    my $settings = self.get_settings();
+    my $settings = self.get-settings();
     for dir("articles").sort.reverse -> $file {
         next if "md" ne $file.extension;
         my $html = "docs/entry/" ~ $file.basename;
@@ -32,6 +32,8 @@ method run() {
 
     my $list = "docs/list.html";
     spurt $list, self.htmlize-list($settings, @articles);
+
+    self.copy-static-files();
 }
 
 method htmlize-article($settings, $params, $markdown) {
@@ -84,7 +86,32 @@ method parse($file) {
     return $%params, @text.join: "\n";
 }
 
-method get_settings() {
+method get-settings() {
     my %config = load-yaml slurp($config_file);
     return $%config;
+}
+
+method copy-static-files() {
+    my $root-dir = "./static".IO;
+    self.recursive-mkdir($root-dir, "./docs/static".IO);
+    self.recursive-copy($root-dir, "./docs/static".IO);
+}
+
+method recursive-mkdir($from, $to) {
+    for $from.dir -> $file {
+        if $file.d and not $file.l {
+            $to.IO.child($file).mkdir unless $to.IO.child($file).e;
+            self.recursive-mkdir($file, $to.IO.child($file));
+        }
+    }
+}
+
+method recursive-copy($from, $to) {
+    for $from.dir -> $file {
+        if $file.d and not $file.l {
+            self.recursive-copy($file, $to.IO.child($file));
+        } else {
+            $file.copy($to.IO.child($file));
+        }
+    }
 }
