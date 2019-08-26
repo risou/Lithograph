@@ -32,6 +32,6 @@ method run() {
     say "copy .yml files";
     spurt ".".IO.child(".travis.yml"), slurp(%?RESOURCES{".travis.yml"}.IO);
     spurt ".".IO.child("config.yml"), slurp(%?RESOURCES{"config.yml"}.IO);
-    say "Complete setup. Please pdate config.yml ."
+    say "Complete setup. Please edit config.yml ."
     
 }
