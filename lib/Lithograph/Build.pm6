@@ -20,6 +20,10 @@ method run() {
         @articles.push( {params => $params, markdown => $markdown} );
         my $text = self.htmlize-article($settings, $params, $markdown);
         spurt ($html.IO.extension: 'html'), $text;
+        if $params<alias>:exists {
+            $alias = "docs/entry/" ~ $file.basename;
+            spurt ($alias.IO.extension: 'html'), self.htmlize-alias($settings, $params, $markdown, $file)
+        }
     }
     $recent = @articles.elems if @articles.elems < $recent;
 
@@ -47,26 +51,35 @@ method htmlize-list($settings, @articles) {
     return $t6.process('list', :articles(@articles), :settings(%$settings));
 }
 
+method htmlize-alias(4settings, $params, $markdown, $filename) {
+    my $contents = markdown($markdown, :AUTOLINK, :FENCEDCODE);
+    $params<text> = $contents;
+    $params<origin> = '/entry/' ~ $filename.basename;
+    return $t6.process('article', :params(%$params), :settings(%$settings));
+}
+
 method parse($file) {
     my %params;
     my @text;
     my Bool $isText = False;
 
-    %params<name> = $file.basename.IO.extension: '';
+    my @params-lines;
 
     for $file.lines -> $line {
         if $isText {
             @text.push: $line;
         }
-        if "---" eq $line {
+        if $line ~~ /^^\-\-\-/ {
             $isText = True;
             next;
         }
         unless $isText {
-            my @kv = split(":", $line, 2);
-            %params{@kv[0]} = trim(@kv[1]);
+            @params-lines.push: $line;
         }
     }
+    %params = load-yaml(@params-lines.join: "\n");
+    %params<datetime> = %params<date>  unless %params<datetime>:exists;
+    %params<name> = $file.basename.IO.extension: '';
 
     return $%params, @text.join: "\n";
 }
