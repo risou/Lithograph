@@ -12,13 +12,14 @@ install:
   - zef install Template6
   - zef install YAMLish --force-test
   - git clone --depth 1 https://${GH_TOKEN}@github.com/risou/Lithograph.git
+before_script:
+  - git checkout master
 script:
   - export PERL6LIB=Lithograph/lib
   # - perl6 Lithograph/bin/lithograph create
   # - perl6 Lithograph/bin/lithograph build
   - bash Lithograph/bin/build.sh
 after_success:
-  - git checkout master
   - git add docs/*
   - git commit -m "[ci skip] by Travis CI (JOB $TRAVIS_JOB_NUMBER)"
   - git push https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git master # >/dev/null 2>&1
