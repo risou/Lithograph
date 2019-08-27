@@ -108,7 +108,7 @@ method htmlize-list($settings, @articles) {
 
 method htmlize-alias($settings, $params, $markdown, $filename) {
     my $contents = Text::Markdown::Discount.from-str($markdown, :AUTOLINK, :FENCEDCODE, :EXTRA_FOOTNOTE);
-    $params<text> = $contents;
+    $params<text> = $contents.to-html;
     $params<origin> = '/entry/' ~ $filename.basename.IO.extension: 'html';
     return $t6.process('article', :params(%$params), :settings(%$settings), :canonical(True));
 }
