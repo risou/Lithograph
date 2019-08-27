@@ -9,10 +9,57 @@ my $t6 = Template6.new;
 $t6.add-path: 'templates';
 my $config_file = 'config.yml'.IO;
 
-method run() {
+method run(@args) {
+    my $settings = self.get-settings();
+
+    if @args.elems == 2 && @args[0] eq 'article' {
+        my $name = @args[1];
+        my $filename = "articles/" ~ $name;
+        my $html = "docs/entry/" ~ $filename.IO.basename;
+        my ($params, $markdown) = self.parse($filename.IO);
+        my $text = self.htmlize-article($settings, $params, $markdown);
+        spurt ($html.IO.extension: 'html'), $text;
+        say "make " ~ $html.IO.extension: 'html';
+        if $params<alias>:exists {
+            my $alias = "docs/entry/" ~ $params<alias> ~ ".html";
+            spurt ($alias.IO.extension: 'html'), self.htmlize-alias($settings, $params, $markdown, $filename.IO);
+            say "make alias " ~ $alias.IO.extension: 'html';
+        }
+        return;
+    } elsif @args.elems == 1 && @args[0] eq 'index' {
+        my @articles;
+        my $recent = 5;
+        for dir("articles").sort.reverse -> $file {
+            next if "md" ne $file.extension;
+            my ($params, $markdown) = self.parse($file);
+            @articles.push( {params => $params, markdown => $markdown} );
+            $recent--;
+            last if $recent <= 0;
+        }
+        my $index = "docs/index.html";
+        spurt $index, self.htmlize-index($settings, @articles);
+        say "make index.html";
+        return;
+    } elsif @args.elems == 1 && @args[0] eq 'list' {
+        my @articles;
+        for dir("articles").sort.reverse -> $file {
+            next if "md" ne $file.extension;
+            my $html = "docs/entry/" ~ $file.basename;
+            my ($params, $markdown) = self.parse($file);
+            @articles.push( {params => $params, markdown => $markdown} );
+        }
+        my $list = "docs/list.html";
+        spurt $list, self.htmlize-list($settings, @articles);
+        say "make list.html";
+        return;
+    } elsif @args.elems == 1 && @args[0] eq 'static' {
+        self.copy-static-files();
+        say "copy static files";
+        return;
+    }
+
     my @articles;
     my $recent = 5;
-    my $settings = self.get-settings();
     for dir("articles").sort.reverse -> $file {
         next if "md" ne $file.extension;
         my $html = "docs/entry/" ~ $file.basename;
@@ -42,14 +89,14 @@ method run() {
 }
 
 method htmlize-article($settings, $params, $markdown) {
-    my $contents = Text::Markdown::Discount.from-str($markdown, :AUTOLINK, :FENCEDCODE);
+    my $contents = Text::Markdown::Discount.from-str($markdown, :AUTOLINK, :FENCEDCODE, :EXTRA_FOOTNOTE);
     $params<text> = $contents.to-html;
     return $t6.process('article', :params(%$params), :settings(%$settings), :canonical(False));
 }
 
 method htmlize-index($settings, @articles) {
     for @articles -> $article {
-        my $contents = Text::Markdown::Discount.from-str($article<markdown>, :AUTOLINK, :FENCEDCODE);
+        my $contents = Text::Markdown::Discount.from-str($article<markdown>, :AUTOLINK, :FENCEDCODE, :EXTRA_FOOTNOTE);
         $article<params><text> = $contents.to-html;
     }
     return $t6.process('index', :articles(@articles), :settings(%$settings));
@@ -60,8 +107,8 @@ method htmlize-list($settings, @articles) {
 }
 
 method htmlize-alias($settings, $params, $markdown, $filename) {
-    my $contents = Text::Markdown::Discount.from-str($markdown, :AUTOLINK, :FENCEDCODE);
-    $params<text> = $contents.to-html;
+    my $contents = Text::Markdown::Discount.from-str($markdown, :AUTOLINK, :FENCEDCODE, :EXTRA_FOOTNOTE);
+    $params<text> = $contents;
     $params<origin> = '/entry/' ~ $filename.basename.IO.extension: 'html';
     return $t6.process('article', :params(%$params), :settings(%$settings), :canonical(True));
 }

@@ -14,8 +14,9 @@ install:
   - git clone --depth 1 https://${GH_TOKEN}@github.com/risou/Lithograph.git
 script:
   - export PERL6LIB=Lithograph/lib
-  - perl6 Lithograph/bin/lithograph create
-  - perl6 Lithograph/bin/lithograph build
+  # - perl6 Lithograph/bin/lithograph create
+  # - perl6 Lithograph/bin/lithograph build
+  - bash Lithograph/bin/build.sh
 after_success:
   - git checkout master
   - git add docs/*

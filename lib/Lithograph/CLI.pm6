@@ -16,8 +16,8 @@ method run(Str $command, @params) {
             Lithograph::Write.run(@params);
         }
         when "build" {
-            say "`build` command must has no parameter" and succeed if @params.elems != 0;
-            Lithograph::Build.run();
+            # say "`build` command must has no parameter" and succeed if @params.elems != 0;
+            Lithograph::Build.run(@params);
         }
         default {
             say "The command is not correct. See usage by executing lithograph with no option.";
