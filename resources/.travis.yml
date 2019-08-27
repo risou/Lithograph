@@ -2,21 +2,24 @@ os:
   - linux
 language: perl6
 perl6:
-  - latest
+  # - latest
+  - '2019.03'
 install:
   - sudo apt-get install libmarkdown2-dev
   - rakudobrew build zef
+  # - zef install https://${GH_TOKEN}@github.com/risou/Lithograph.git
   - zef install Text::Markdown::Discount
   - zef install Template6
-  - zef install YAMLish
-  - zef install git://github.com/risou/Lithograph.git
+  - zef install YAMLish --force-test
+  - git clone --depth 1 https://${GH_TOKEN}@github.com/risou/Lithograph.git
 script:
-  - perl6 lithograph create
-  - perl6 lithograph build
+  - export PERL6LIB=Lithograph/lib
+  - perl6 Lithograph/bin/lithograph create
+  - perl6 Lithograph/bin/lithograph build
 after_success:
   - git checkout master
   - git add docs/*
-  - git commit -m "by Travis CI (JOB $TRAVIS_JOB_NUMBER)"
+  - git commit -m "[ci skip] by Travis CI (JOB $TRAVIS_JOB_NUMBER)"
   - git push https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git master # >/dev/null 2>&1
 notifications:
   email: false
