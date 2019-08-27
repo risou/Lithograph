@@ -42,14 +42,15 @@ method run() {
 }
 
 method htmlize-article($settings, $params, $markdown) {
-    my $contents = markdown($markdown, :AUTOLINK, :FENCEDCODE);
-    $params<text> = $contents;
+    my $contents = Text::Markdown::Discount.from-str($markdown, :AUTOLINK, :FENCEDCODE);
+    $params<text> = $contents.to-html;
     return $t6.process('article', :params(%$params), :settings(%$settings), :canonical(False));
 }
 
 method htmlize-index($settings, @articles) {
     for @articles -> $article {
-        $article<params><text> = markdown($article<markdown>, :AUTOLINK, :FENCEDCODE);
+        my $contents = Text::Markdown::Discount.from-str($article<markdown>, :AUTOLINK, :FENCEDCODE);
+        $article<params><text> = $contents.to-html;
     }
     return $t6.process('index', :articles(@articles), :settings(%$settings));
 }
@@ -59,8 +60,8 @@ method htmlize-list($settings, @articles) {
 }
 
 method htmlize-alias($settings, $params, $markdown, $filename) {
-    my $contents = markdown($markdown, :AUTOLINK, :FENCEDCODE);
-    $params<text> = $contents;
+    my $contents = Text::Markdown::Discount.from-str($markdown, :AUTOLINK, :FENCEDCODE);
+    $params<text> = $contents.to-html;
     $params<origin> = '/entry/' ~ $filename.basename;
     return $t6.process('article', :params(%$params), :settings(%$settings), :canonical(True));
 }
