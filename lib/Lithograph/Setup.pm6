@@ -14,6 +14,7 @@ method run() {
 
     # setup directories
     say "make directories";
+    IO::Path.new("static").mkdir(0o755);
     IO::Path.new("articles").mkdir(0o755);
     IO::Path.new("templates").mkdir(0o755);
     IO::Path.new("docs").mkdir(0o755);
@@ -27,7 +28,7 @@ method run() {
     }
     say "copy static files";
     for @static -> $file {
-        spurt "docs/static".IO.child($file), slurp(%?RESOURCES{"static/" ~ $file}.IO);
+        spurt "static".IO.child($file), slurp(%?RESOURCES{"static/" ~ $file}.IO);
     }
     say "copy .yml files";
     spurt ".".IO.child(".travis.yml"), slurp(%?RESOURCES{".travis.yml"}.IO);
