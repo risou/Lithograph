@@ -153,8 +153,8 @@ method copy-static-files() {
 method recursive-mkdir($from, $to) {
     for $from.dir -> $file {
         if $file.d and not $file.l {
-            $to.IO.child($file).mkdir unless $to.IO.child($file).e;
-            self.recursive-mkdir($file, $to.IO.child($file));
+            $to.IO.child($file.basename).mkdir unless $to.IO.child($file.basename).e;
+            self.recursive-mkdir($file, $to.IO.child($file.basename));
         }
     }
 }
@@ -162,9 +162,9 @@ method recursive-mkdir($from, $to) {
 method recursive-copy($from, $to) {
     for $from.dir -> $file {
         if $file.d and not $file.l {
-            self.recursive-copy($file, $to.IO.child($file));
+            self.recursive-copy($file, $to.IO.child($file.basename));
         } else {
-            $file.copy($to.IO.child($file));
+            $file.copy($to.IO.child($file.basename));
         }
     }
 }
