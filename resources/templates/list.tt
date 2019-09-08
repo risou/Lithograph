@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
         <link rel="stylesheet" href="/static/main.css">
+        <title>archives | [% settings.blog.title %]</title>
     </head>
     <body>
         <section class="hero is-medium is-bold is-dark">
@@ -15,7 +16,7 @@
             </div>
         </section>
         <div class="container">
-            <nav class="level">
+            <nav class="level is-mobile">
                 <div class="level-left"></div>
                 <div class="level-right">
                     <p class="level-item"><a href="/">top</a></p>
@@ -27,8 +28,8 @@
                     <table class="table is-hoverable">
                         [% for articles -> article %]
                         <tr>
-                            <th style="width: 150px;">[% article.params.date %]</th>
-                            <th><a href="/entry/[% article.params.name %].html">[% article.params.title %]</a></th>
+                            <td style="width: 150px;">[% article.params.date %]</td>
+                            <td><a href="/entry/[% article.params.name %].html">[% article.params.title %]</a></td>
                         </tr>
                         [% end %]
                     </table>
