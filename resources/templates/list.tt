@@ -15,27 +15,29 @@
                 </div>
             </div>
         </section>
-        <div class="container">
-            <nav class="level is-mobile">
-                <div class="level-left"></div>
-                <div class="level-right">
-                    <p class="level-item"><a href="/">top</a></p>
-                    <p class="level-item">list</p>
-                </div>
-            </nav>
-            <section class="articles">
-                <div class="content">
-                    <table class="table is-hoverable">
-                        [% for articles -> article %]
-                        <tr>
-                            <td style="width: 150px;">[% article.params.date %]</td>
-                            <td><a href="/entry/[% article.params.name %].html">[% article.params.title %]</a></td>
-                        </tr>
+        <section class="section">
+            <div class="container">
+                <nav class="level is-mobile">
+                    <div class="level-left"></div>
+                    <div class="level-right">
+                        <p class="level-item"><a href="/">top</a></p>
+                        <p class="level-item">list</p>
+                    </div>
+                </nav>
+                <article class="articles">
+                    <div class="content">
+                        <table class="table is-hoverable">
+                            [% for articles -> article %]
+                            <tr>
+                                <td style="width: 150px;">[% article.params.date %]</td>
+                                <td><a href="/entry/[% article.params.name %].html">[% article.params.title %]</a></td>
+                            </tr>
                         [% end %]
-                    </table>
-                </div>
-
-        </div>
+                        </table>
+                    </div>
+                </article>
+            </div>
+        </section>
         <footer class="footer">
             <div class="content has-text-centered">
                 [% settings.blog.footer %]

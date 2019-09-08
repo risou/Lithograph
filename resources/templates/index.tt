@@ -15,26 +15,28 @@
                 </div>
             </div>
         </section>
-        <div class="container">
-            <nav class="level">
-                <div class="level-left"></div>
-                <div class="level-right">
-                    <p class="level-item">top</p>
-                    <p class="level-item"><a href="/list.html">list</a></p>
-                </div>
-            </nav>
-            <section class="articles">
-                [% for articles -> article %]
-                <div class="article">
-                    <h1 class="title is-2"><a href="/entry/[% article.params.name %].html">[% article.params.title %]</a></h1>
-                    <div class="subtitle published">[% article.params.date %]</div>
-                    <div class="content">
-                        [% article.params.text %]
+        <section class="section">
+            <div class="container">
+                <nav class="level is-mobile">
+                    <div class="level-left"></div>
+                    <div class="level-right">
+                        <p class="level-item">top</p>
+                        <p class="level-item"><a href="/list.html">list</a></p>
                     </div>
-                </div>
+                </nav>
+                <article class="articles">
+                    [% for articles -> article %]
+                    <div class="article">
+                        <h1 class="title is-2"><a href="/entry/[% article.params.name %].html">[% article.params.title %]</a></h1>
+                        <div class="subtitle published">[% article.params.date %]</div>
+                        <div class="content">
+                            [% article.params.text %]
+                        </div>
+                    </div>
                 [% end %]
-            </section>
-        </div>
+                </article>
+            </div>
+        </section>
         <footer class="footer">
             <div class="content has-text-centered">
                 [% settings.blog.footer %]
