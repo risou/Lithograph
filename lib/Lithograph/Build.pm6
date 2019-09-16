@@ -11,6 +11,9 @@ my $config_file = 'config.yml'.IO;
 
 method run(@args) {
     my $settings = self.get-settings();
+    if $settings<option><ga_id>:exists && $settings<option><ga_id> ~~ /^^UA\-/ {
+        $settings<ga> = True;
+    }
 
     if @args.elems == 2 && @args[0] eq 'article' {
         my $name = @args[1];
@@ -91,7 +94,18 @@ method run(@args) {
 method htmlize-article($settings, $params, $markdown) {
     my $contents = Text::Markdown::Discount.from-str($markdown, :AUTOLINK, :FENCEDCODE, :EXTRA_FOOTNOTE);
     $params<text> = $contents.to-html;
-    return $t6.process('article', :params(%$params), :settings(%$settings), :canonical(False));
+    my %args = (
+        :params(%$params),
+        :settings(%$settings),
+        :canonical(False),
+    );
+    if $settings<ga> {
+        %args.push: (:ga(True));
+    }
+    else {
+        %args.push: (:ga(False));
+    }
+    return $t6.process('article', |%args);
 }
 
 method htmlize-index($settings, @articles) {
@@ -99,18 +113,49 @@ method htmlize-index($settings, @articles) {
         my $contents = Text::Markdown::Discount.from-str($article<markdown>, :AUTOLINK, :FENCEDCODE, :EXTRA_FOOTNOTE);
         $article<params><text> = $contents.to-html;
     }
-    return $t6.process('index', :articles(@articles), :settings(%$settings));
+    my %args = (
+        :articles(@articles),
+        :settings(%$settings),
+    );
+    if $settings<ga> {
+        %args.push: (:ga(True));
+    }
+    else {
+        %args.push: (:ga(False));
+    }
+    return $t6.process('index', |%args);
 }
 
 method htmlize-list($settings, @articles) {
-    return $t6.process('list', :articles(@articles), :settings(%$settings));
+    my %args = (
+        :articles(@articles),
+        :settings(%$settings),
+    );
+    if $settings<ga> {
+        %args.push: (:ga(True));
+    }
+    else {
+        %args.push: (:ga(False));
+    }
+    return $t6.process('list', |%args);
 }
 
 method htmlize-alias($settings, $params, $markdown, $filename) {
     my $contents = Text::Markdown::Discount.from-str($markdown, :AUTOLINK, :FENCEDCODE, :EXTRA_FOOTNOTE);
     $params<text> = $contents.to-html;
     $params<origin> = '/entry/' ~ $filename.basename.IO.extension: 'html';
-    return $t6.process('article', :params(%$params), :settings(%$settings), :canonical(True));
+    my %args = (
+        :params(%$params),
+        :settings(%$settings),
+        :canonical(True),
+    );
+    if $settings<ga> {
+        %args.push: (:ga(True));
+    }
+    else {
+        %args.push: (:ga(False));
+    }
+    return $t6.process('article', |%args);
 }
 
 method parse($file) {

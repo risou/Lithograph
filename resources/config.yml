@@ -1,3 +1,5 @@
 blog:
   title: blog title
   footer: '&copy; footer'
+option:
+  ga_id: UA-********-*
