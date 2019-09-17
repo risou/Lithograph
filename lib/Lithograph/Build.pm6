@@ -94,6 +94,16 @@ method run(@args) {
 method htmlize-article($settings, $params, $markdown) {
     my $contents = Text::Markdown::Discount.from-str($markdown, :AUTOLINK, :FENCEDCODE, :EXTRA_FOOTNOTE);
     $params<text> = $contents.to-html;
+    my %ogp = (
+        title => $params<title> ~ ' | ' ~ $settings<blog><title>,
+        type => 'article',
+        url => 'https://' ~ $settings<blog><domain> ~ '/entry/' ~ $params<name> ~ '.html',
+        image => $settings<ogp><default_image>,
+    );
+    if $params<image>:exists {
+        %ogp<image> = $params<image>;
+    }
+    $params<ogp> = %ogp;
     my %args = (
         :params(%$params),
         :settings(%$settings),
@@ -105,6 +115,24 @@ method htmlize-article($settings, $params, $markdown) {
     else {
         %args.push: (:ga(False));
     }
+    if $params<description>:exists {
+        %args.push: (:exists_description(True));
+    }
+    else {
+        %args.push: (:exists_description(False));
+    }
+    if $settings<ogp><fb_app_id>:exists {
+        %args.push: (:exists_ogp_fb(True));
+    }
+    else {
+        %args.push: (:exists_ogp_fb(False));
+    }
+    if $settings<ogp><twitter_id>:exists {
+        %args.push: (:exists_ogp_tw(True));
+    }
+    else {
+        %args.push: (:exists_ogp_tw(False));
+    }
     return $t6.process('article', |%args);
 }
 
@@ -113,29 +141,75 @@ method htmlize-index($settings, @articles) {
         my $contents = Text::Markdown::Discount.from-str($article<markdown>, :AUTOLINK, :FENCEDCODE, :EXTRA_FOOTNOTE);
         $article<params><text> = $contents.to-html;
     }
+    my %ogp = (
+        title => $settings<blog><title>,
+        type => 'website',
+        url => 'https://' ~ $settings<blog><domain>,
+        image => $settings<ogp><default_image>,
+    );
+    my %params = (
+        ogp => %ogp,
+    );
     my %args = (
         :articles(@articles),
         :settings(%$settings),
+        :params(%params),
+        :exists_description(False),
     );
     if $settings<ga> {
         %args.push: (:ga(True));
     }
     else {
         %args.push: (:ga(False));
+    }
+    if $settings<ogp><fb_app_id>:exists {
+        %args.push: (:exists_ogp_fb(True));
+    }
+    else {
+        %args.push: (:exists_ogp_fb(False));
+    }
+    if $settings<ogp><twitter_id>:exists {
+        %args.push: (:exists_ogp_tw(True));
+    }
+    else {
+        %args.push: (:exists_ogp_tw(False));
     }
     return $t6.process('index', |%args);
 }
 
 method htmlize-list($settings, @articles) {
+    my %ogp = (
+        title => 'archives | ' ~ $settings<blog><title>,
+        type => 'article',
+        url => 'https://' ~ $settings<blog><domain> ~ '/list.html',
+        image => $settings<ogp><default_image>,
+    );
+    my %params = (
+        ogp => %ogp,
+    );
     my %args = (
         :articles(@articles),
         :settings(%$settings),
+        :params(%params),
+        :exists_description(False),
     );
     if $settings<ga> {
         %args.push: (:ga(True));
     }
     else {
         %args.push: (:ga(False));
+    }
+    if $settings<ogp><fb_app_id>:exists {
+        %args.push: (:exists_ogp_fb(True));
+    }
+    else {
+        %args.push: (:exists_ogp_fb(False));
+    }
+    if $settings<ogp><twitter_id>:exists {
+        %args.push: (:exists_ogp_tw(True));
+    }
+    else {
+        %args.push: (:exists_ogp_tw(False));
     }
     return $t6.process('list', |%args);
 }
