@@ -1,5 +1,11 @@
 blog:
   title: blog title
   footer: '&copy; footer'
+  domain: domain.name
+ogp:
+  default_image: default_image_path
+  fb_app_id: 00000000
+  twitter_id: <id exclude at mark>
 option:
   ga_id: UA-********-*
+  
