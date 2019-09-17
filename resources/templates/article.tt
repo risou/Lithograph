@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-    <head>
+    <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#">
         [% if ga %]
         <script async src="https://www.googletagmanager.com/gtag/js?id=[% settings.option.ga_id %]"></script>
         <script>
@@ -12,6 +12,7 @@
         [% end %]
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+[% INCLUDE ogp %]
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
         <link rel="stylesheet" href="/static/main.css">
         [% if canonical %]<link rel="canonical" href="[% params.origin %]">[% end %]
