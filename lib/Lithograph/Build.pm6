@@ -109,7 +109,7 @@ method htmlize-article($settings, $params, $markdown) {
     else {
         my $raw_text = S:g/\<.*?\>// with $params<text>;
         $raw_text ~~ s:g/\n/ /;
-        %ogp<description> = $raw_text.chars > 80 ?? substr($raw_text, 0..80) ~ '...' !! $raw_text;
+        %ogp<description> = $raw_text.chars > 80 ?? substr($raw_text, 0..70) ~ '...' !! $raw_text;
     }
     $params<ogp> = %ogp;
     my %args = (
