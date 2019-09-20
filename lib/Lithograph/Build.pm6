@@ -220,6 +220,24 @@ method htmlize-alias($settings, $params, $markdown, $filename) {
     my $contents = Text::Markdown::Discount.from-str($markdown, :AUTOLINK, :FENCEDCODE, :EXTRA_FOOTNOTE);
     $params<text> = $contents.to-html;
     $params<origin> = '/entry/' ~ $filename.basename.IO.extension: 'html';
+    my %ogp = (
+        title => $params<title> ~ ' | ' ~ $settings<blog><title>,
+        type => 'article',
+        url => 'https://' ~ $settings<blog><domain> ~ '/entry/' ~ $params<alias> ~ '.html',
+        image => $settings<ogp><default_image>,
+    );
+    if $params<image>:exists {
+        %ogp<image> = $params<image>;
+    }
+    if $params<description>:exists {
+        %ogp<description> = $params<description>;
+    }
+    else {
+        my $raw_text = S:g/\<.*?\>// with $params<text>;
+        $raw_text ~~ s:g/\n/ /;
+        %ogp<description> = $raw_text.chars > 80 ?? substr($raw_text, 0..70) ~ '...' !! $raw_text;
+    }
+    $params<ogp> = %ogp;
     my %args = (
         :params(%$params),
         :settings(%$settings),
@@ -230,6 +248,18 @@ method htmlize-alias($settings, $params, $markdown, $filename) {
     }
     else {
         %args.push: (:ga(False));
+    }
+    if $settings<ogp><fb_app_id>:exists {
+        %args.push: (:exists_ogp_fb(True));
+    }
+    else {
+        %args.push: (:exists_ogp_fb(False));
+    }
+    if $settings<ogp><twitter_id>:exists {
+        %args.push: (:exists_ogp_tw(True));
+    }
+    else {
+        %args.push: (:exists_ogp_tw(False));
     }
     return $t6.process('article', |%args);
 }
