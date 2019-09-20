@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh -eu
 
 export PERL6LIB=Lithograph/lib
 ls -A articles/*.md | sort -r | xargs -n1 basename | xargs -I {} perl6 Lithograph/bin/lithograph build article {}
