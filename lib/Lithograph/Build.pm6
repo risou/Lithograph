@@ -103,6 +103,14 @@ method htmlize-article($settings, $params, $markdown) {
     if $params<image>:exists {
         %ogp<image> = $params<image>;
     }
+    if $params<description>:exists {
+        %ogp<description> = $params<description>;
+    }
+    else {
+        my $raw_text = S:g/\<.*?\>// with $params<text>;
+        $raw_text ~~ s:g/\n/ /;
+        %ogp<description> = $raw_text.chars > 80 ?? substr($raw_text, 0..80) ~ '...' !! $raw_text;
+    }
     $params<ogp> = %ogp;
     my %args = (
         :params(%$params),
@@ -114,12 +122,6 @@ method htmlize-article($settings, $params, $markdown) {
     }
     else {
         %args.push: (:ga(False));
-    }
-    if $params<description>:exists {
-        %args.push: (:exists_description(True));
-    }
-    else {
-        %args.push: (:exists_description(False));
     }
     if $settings<ogp><fb_app_id>:exists {
         %args.push: (:exists_ogp_fb(True));
@@ -146,6 +148,7 @@ method htmlize-index($settings, @articles) {
         type => 'website',
         url => 'https://' ~ $settings<blog><domain>,
         image => $settings<ogp><default_image>,
+        description => $settings<blog><description> || '',
     );
     my %params = (
         ogp => %ogp,
@@ -154,7 +157,6 @@ method htmlize-index($settings, @articles) {
         :articles(@articles),
         :settings(%$settings),
         :params(%params),
-        :exists_description(False),
     );
     if $settings<ga> {
         %args.push: (:ga(True));
@@ -183,6 +185,7 @@ method htmlize-list($settings, @articles) {
         type => 'article',
         url => 'https://' ~ $settings<blog><domain> ~ '/list.html',
         image => $settings<ogp><default_image>,
+        description => $settings<blog><description>,
     );
     my %params = (
         ogp => %ogp,
@@ -191,7 +194,6 @@ method htmlize-list($settings, @articles) {
         :articles(@articles),
         :settings(%$settings),
         :params(%params),
-        :exists_description(False),
     );
     if $settings<ga> {
         %args.push: (:ga(True));
