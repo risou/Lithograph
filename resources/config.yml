@@ -7,5 +7,6 @@ ogp:
   default_image: default_image_path
   fb_app_id: 00000000
   twitter_id: <id exclude at mark>
+  default_twitter_card: summary
 option:
   ga_id: UA-********-*

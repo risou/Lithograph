@@ -99,6 +99,7 @@ method htmlize-article($settings, $params, $markdown) {
         type => 'article',
         url => 'https://' ~ $settings<blog><domain> ~ '/entry/' ~ $params<name> ~ '.html',
         image => $settings<ogp><default_image>,
+        twitter_card => $settings<ogp><default_twitter_card>,
     );
     if $params<image>:exists {
         %ogp<image> = $params<image>;
@@ -110,6 +111,9 @@ method htmlize-article($settings, $params, $markdown) {
         my $raw_text = S:g/\<.*?\>// with $params<text>;
         $raw_text ~~ s:g/\n/ /;
         %ogp<description> = $raw_text.chars > 80 ?? substr($raw_text, 0..70) ~ '...' !! $raw_text;
+    }
+    if $params<twitter_card>:exists {
+        %ogp<twitter_card> = $params<twitter_card>;
     }
     $params<ogp> = %ogp;
     my %args = (
@@ -149,6 +153,7 @@ method htmlize-index($settings, @articles) {
         url => 'https://' ~ $settings<blog><domain>,
         image => $settings<ogp><default_image>,
         description => $settings<blog><description> || '',
+        twitter_card => $settings<ogp><default_twitter_card>,
     );
     my %params = (
         ogp => %ogp,
@@ -186,6 +191,7 @@ method htmlize-list($settings, @articles) {
         url => 'https://' ~ $settings<blog><domain> ~ '/list.html',
         image => $settings<ogp><default_image>,
         description => $settings<blog><description>,
+        twitter_card => $settings<ogp><default_twitter_card>,
     );
     my %params = (
         ogp => %ogp,
@@ -225,6 +231,7 @@ method htmlize-alias($settings, $params, $markdown, $filename) {
         type => 'article',
         url => 'https://' ~ $settings<blog><domain> ~ '/entry/' ~ $params<alias> ~ '.html',
         image => $settings<ogp><default_image>,
+        twitter_card => $settings<ogp><default_twitter_card>,
     );
     if $params<image>:exists {
         %ogp<image> = $params<image>;
@@ -236,6 +243,9 @@ method htmlize-alias($settings, $params, $markdown, $filename) {
         my $raw_text = S:g/\<.*?\>// with $params<text>;
         $raw_text ~~ s:g/\n/ /;
         %ogp<description> = $raw_text.chars > 80 ?? substr($raw_text, 0..70) ~ '...' !! $raw_text;
+    }
+    if $params<twitter_card>:exists {
+        %ogp<twitter_card> = $params<twitter_card>;
     }
     $params<ogp> = %ogp;
     my %args = (

@@ -6,7 +6,8 @@ method run() {
     my @templates = [
         "index.tt",
         "list.tt",
-        "article.tt"
+        "article.tt",
+        "ogp.tt",
     ];
     my @static = [
         "main.css"

@@ -25,6 +25,7 @@
     "templates/index.tt",
     "templates/list.tt",
     "templates/article.tt",
+    "templates/ogp.tt",
     "static/main.css"
   ],
   "source-url" : "",
