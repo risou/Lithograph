@@ -22,6 +22,7 @@
   "resources" : [
     "config.yml",
     ".travis.yml",
+    "github-actions/build.yml",
     "templates/index.tt",
     "templates/list.tt",
     "templates/article.tt",

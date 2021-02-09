@@ -18,6 +18,7 @@ method run() {
     IO::Path.new("static").mkdir(0o755);
     IO::Path.new("articles").mkdir(0o755);
     IO::Path.new("templates").mkdir(0o755);
+    IO::Path.new(".github/workflows").mkdir(0o755);
     IO::Path.new("docs").mkdir(0o755);
     IO::Path.new("docs/static").mkdir(0o755);
     IO::Path.new("docs/entry").mkdir(0o755);
@@ -34,6 +35,7 @@ method run() {
     say "copy .yml files";
     spurt ".".IO.child(".travis.yml"), slurp(%?RESOURCES{".travis.yml"}.IO);
     spurt ".".IO.child("config.yml"), slurp(%?RESOURCES{"config.yml"}.IO);
+    spurt ".github/workflows".IO.child("build.yml"), slurp(%?RESOURCES{"github-actions/build.yml"}.IO);
     say "Complete setup. Please edit config.yml ."
     
 }
