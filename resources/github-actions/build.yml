@@ -29,6 +29,16 @@ jobs:
           git switch ${GITHUB_REF##*/}
           export RAKULIB=Lithograph/lib
           bash Lithograph/bin/build.sh
-          git add docs/*
-          git commit -m "[ci skip] by GitHub Actions (JOB $GITHUB_RUN_NUMBER)"
-          git push https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git ${GITHUB_REF##*/} # > /dev/null
+          if ! git diff --exit-code --quiet
+          then
+            git add docs/*
+            git commit -m "[ci skip] by GitHub Actions (JOB $GITHUB_RUN_NUMBER)"
+            git push https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git ${GITHUB_REF##*/} # >/dev/null
+          fi
+       - name: Slack Notification Build Success
+         uses: rtCamp/action-slack-notify@v2.0.2
+         env:
+           SLACK_WEBHOOK: ${{secrets.SLACK_WEBHOOK_URL}}
+           SLACK_TITLE: Build Result
+           SLACK_COLOR: ${{job.status}}
+           SLACK_MESSAGE: "Build: ${{job.status}}"
