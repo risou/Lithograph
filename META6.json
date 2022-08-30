@@ -23,6 +23,7 @@
     "config.yml",
     ".travis.yml",
     "github-actions/build.yml",
+    "github-actions/write.yml",
     "templates/index.tt",
     "templates/list.tt",
     "templates/article.tt",

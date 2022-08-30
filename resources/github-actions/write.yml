@@ -1,0 +1,47 @@
+name: Write Command
+
+on:
+  workflow_dispatch:
+    inputs:
+      file:
+        description: 'File name of new article'
+        required: true
+        type: string
+
+jobs:
+  write-command:
+    runs-on: ubuntu-latest
+    name: write new article
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up
+        uses: Raku/setup-raku@v1
+      - name: Install
+        run: |
+          sudo apt-get install libmarkdown2-dev
+          zef install Text::Markdown::Discount
+          zef install Template6
+          zef install YAMLish --force-test
+          git clone --depth 1 https://github.com/risou/Lithograph.git
+      - name: Write
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git switch ${GITHUB_REF##*/}
+          export RAKULIB=Lithograph/lib
+          export PATH=$PATH:Lithograph/bin
+          lithograph write ${{inputs.file}}
+          git add articles/*
+          git commit -m "[ci skip] create new article by GitHub Actions (JOB $GITHUB_RUN_NUMBER)"
+          git push https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git ${GITHUB_REF##*/} # >/dev/null
+      - name: Slack Notification Write Command Success
+        uses: rtCamp/action-slack-notify@v2.0.2
+        if: success()
+        env:
+          SLACK_WEBHOOK: ${{secrets.SLACK_WEBHOOK_URL}}
+          SLACK_TITLE: Command Result
+          SLACK_COLOR: ${{job.status}}
+          SLACK_MESSAGE: "Write Command: ${{job.status}}" 

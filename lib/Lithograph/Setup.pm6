@@ -36,6 +36,7 @@ method run() {
     spurt ".".IO.child(".travis.yml"), slurp(%?RESOURCES{".travis.yml"}.IO);
     spurt ".".IO.child("config.yml"), slurp(%?RESOURCES{"config.yml"}.IO);
     spurt ".github/workflows".IO.child("build.yml"), slurp(%?RESOURCES{"github-actions/build.yml"}.IO);
+    spurt ".github/workflows".IO.child("write.yml"), slurp(%?RESOURCES{"github-actions/write.yml"}.IO);
     say "Complete setup. Please edit config.yml ."
     
 }
